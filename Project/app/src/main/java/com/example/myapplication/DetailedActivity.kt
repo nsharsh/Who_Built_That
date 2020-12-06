@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ListView
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 class DetailedActivity : AppCompatActivity() {
     private var firebase: Firebase? = null
     private lateinit var listView : ListView
+    var stats = arrayListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,14 +18,29 @@ class DetailedActivity : AppCompatActivity() {
         val actionBarTitle = this.intent.getStringExtra(SEARCH_TAG)
         firebase = Firebase()
         supportActionBar!!.title = actionBarTitle
+        for (i in statsNames.indices){
+            val ele = intent.getStringExtra(statsNames[i]) as String
+            stats.add(ele)
+        }
         listView = findViewById(R.id.detailed_act)
-        val stats = arrayListOf(firebase!!.annualRevenue.toString(), firebase!!.estEmployeeCount.toString(),
-            firebase!!.owners.toString(), firebase!!.location.toString(), firebase!!.subsidiaries.toString())
         val adapter = InformationAdapter(this, stats)
         listView.adapter = adapter
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+
+    }
     companion object{
         private const val SEARCH_TAG = "search_query"
+        private const val REVENUE_TAG = "annual_revenue"
+        private const val EMPLOYEE_TAG = "employees"
+        private const val OWNER_TAG = "owners"
+        private const val LOCATION = "location"
+        private const val SUB = "subsidiaries"
+        private val statsNames = arrayOf(REVENUE_TAG, EMPLOYEE_TAG, OWNER_TAG, LOCATION, SUB)
         private const val TAG = "Final_Proj"
     }
 }

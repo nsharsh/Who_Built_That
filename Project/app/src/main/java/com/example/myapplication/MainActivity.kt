@@ -18,8 +18,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val search = findViewById<Button>(R.id.button)
         search.setOnClickListener{
-            val intent = Intent(this, DetailedActivity::class.java)
             val searchQuery = findViewById<TextView>(R.id.search_query).text
+            val intent = Intent(this, Network::class.java)
             Log.i(TAG, searchQuery.toString())
             intent.putExtra(SEARCH_TAG, searchQuery.toString())
             startActivity(intent)
@@ -53,8 +53,15 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
+
     companion object{
         private const val SEARCH_TAG = "search_query"
+        private const val REVENUE_TAG = "annual_revenue"
+        private const val EMPLOYEE_TAG = "employees"
+        private const val OWNER_TAG = "owners"
+        private const val LOCATION = "location"
+        private const val SUB = "subsidiaries"
+        val statsNames = arrayOf(REVENUE_TAG, EMPLOYEE_TAG, OWNER_TAG, LOCATION, SUB)
         private const val TAG = "Final_Proj"
     }
 
