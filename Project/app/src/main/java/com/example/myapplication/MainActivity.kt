@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         return when (item.itemId) {
             R.id.action_settings -> {
-                val builder: AlertDialog.Builder? = this?.let{
+                val builder: AlertDialog.Builder? = this.let{
                     AlertDialog.Builder(it)
                 }
                 builder?.setTitle(R.string.app_name)

@@ -18,34 +18,29 @@ class Network: Activity() {
     companion object {
         private const val TAG = "Final_Proj"
         private const val SEARCH_TAG = "search_query"
-        private const val REVENUE_TAG = "annual_revenue"
-        private const val EMPLOYEE_TAG = "employees"
-        private const val FOUNDER_TAG = "founders"
-        private const val LOCATION = "location"
-        private const val SUB = "subsidiaries"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fetchStats(intent.getStringExtra(SEARCH_TAG)!!, this, ArrayList<String>())
+        fetchStats(intent.getStringExtra(SEARCH_TAG)!!, this, ArrayList())
 
     }
 
     private fun fetchStats(query: String, context: Context, stats: ArrayList<String>){
         Log.i(TAG, "Fetching stats")
         // Fetching infobox from wikipedia
-        val url_infobox =
+        val urlInfobox =
             "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=$query&rvsection=0"
-        var infobox_page = ""
-        val infobox_task = DownloaderTask(url_infobox, object: MyCallBack {
+        var infoboxPage = ""
+        val infoboxTask = DownloaderTask(urlInfobox, object: MyCallBack {
             override fun finished(output: String) {
                 // Cleanup some of the extra spacing for formatting
-                infobox_page = output.replace(" +".toRegex(), " ")
-                Log.i(TAG, infobox_page)
+                infoboxPage = output.replace(" +".toRegex(), " ")
+                Log.i(TAG, infoboxPage)
 
                 // Regex patterns for each detail to be found from the wikipedia page
-                val regexp_emp = Regex("num_employees = [{]*[a-zA-Z]*\\|*[}]* ?(([0-9]{1,3},?)+)")
-                val regexp_loc = Regex("((location|location_city|hq_location|hq_location_city) =.+\\[{2}((\\w ?)+, (\\w ?|[A-Za-z\\|])+)+\\]{2})")
+                val regexpEmp = Regex("num_employees = [{]*[a-zA-Z]*\\|*[}]* ?(([0-9]{1,3},?)+)")
+                val regexpLocLine = Regex("((location|location_city|hq_location|hq_location_city) =.+\\[{2}((\\w ?)+, (\\w ?|[A-Za-z\\|])+)+\\]{2})")
                 val regexpLoc = Regex("\\[{2}((\\w ?)+, (\\w ?|[A-Za-z\\|])+)+\\]{2}")
                 val regexpRevLine = Regex("revenue =[A-Za-z\\{ \\}]*[\\{\\[A-Za-z \\|\\]\\\$\\}]*(\\d+.\\d+)[A-Z0-9,a-z&*;\\[| ]*(billion|trillion|million)")
                 val regexpRev = Regex("(\\d+.\\d+)[A-Z0-9,a-z&*;\\[| ]*(billion|trillion|million)")
@@ -56,7 +51,7 @@ class Network: Activity() {
 
                 // Try Getting Revenue
                 try {
-                    val revLine = regexpRevLine.find(infobox_page, 0)!!.groupValues[0]
+                    val revLine = regexpRevLine.find(infoboxPage, 0)!!.groupValues[0]
                     val rev = regexpRev.find(revLine, 0)!!.groupValues[1] + " " + regexpRev.find(revLine, 0)!!.groupValues[2]
                     Log.i(TAG, rev)
                     stats.add(rev)
@@ -68,7 +63,7 @@ class Network: Activity() {
 
                 // Try Getting Employee Count
                 try {
-                    val empCount = regexp_emp.find(infobox_page, 0)!!.groupValues[1]
+                    val empCount = regexpEmp.find(infoboxPage, 0)!!.groupValues[1]
                     Log.i(TAG, empCount)
                     stats.add(empCount)
                 } catch (e : Exception) {
@@ -79,7 +74,7 @@ class Network: Activity() {
 
                 // Try Getting Founders
                 try {
-                    val founderLine = regexpFoundersLine.find(infobox_page, 0)!!.groupValues[0]
+                    val founderLine = regexpFoundersLine.find(infoboxPage, 0)!!.groupValues[0]
                     val founders = regexpFounders.find(founderLine, 0)!!.groupValues[0]
                         .replace("[","").replace("]", "")
                         .replace("{","").replace("}","")
@@ -95,7 +90,7 @@ class Network: Activity() {
 
                 // Try Getting Location
                 try {
-                    val locLine = regexp_loc.find(infobox_page, 0)!!.groupValues[0]
+                    val locLine = regexpLocLine.find(infoboxPage, 0)!!.groupValues[0]
                     val loc = regexpLoc.find(locLine, 0)!!.groupValues[1]
                     Log.i(TAG, loc)
                     stats.add(loc)
@@ -107,8 +102,8 @@ class Network: Activity() {
 
                 // Try Getting Subsidiaries
                 try {
-                    val subsidLine = regexpSubsidLine.find(infobox_page, 0)!!.groupValues[0]
-                    var subsid = regexpSubsid.find(subsidLine, 0)!!.groupValues[0]
+                    val subsidLine = regexpSubsidLine.find(infoboxPage, 0)!!.groupValues[0]
+                    val subsid = regexpSubsid.find(subsidLine, 0)!!.groupValues[0]
                         .replace("\\\\n ".toRegex(), "").replace("ubl| ","")
                         .replace("ubl|","").replace("[","").replace("]", "")
                         .replace("{","").replace("}","")
@@ -130,7 +125,7 @@ class Network: Activity() {
                 startActivity(intent)
             }
         })
-        infobox_task.execute()
+        infoboxTask.execute()
     }
 
     // Used to get rid of blank Activity screen between transition from MainActivity to DetailedView

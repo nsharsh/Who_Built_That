@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 // This activity shows the detailed view of the company with the given company info from Network.kt
 class DetailedActivity : AppCompatActivity() {
     private lateinit var listView : ListView
-    var stats = arrayListOf<String>()
+    private var stats = arrayListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +38,5 @@ class DetailedActivity : AppCompatActivity() {
         private const val LOCATION = "location"
         private const val SUB = "subsidiaries"
         private val statsNames = arrayOf(REVENUE_TAG, EMPLOYEE_TAG, FOUNDER_TAG, LOCATION, SUB)
-        private const val TAG = "Final_Proj"
     }
 }
