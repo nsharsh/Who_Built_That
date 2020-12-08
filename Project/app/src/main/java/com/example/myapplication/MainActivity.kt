@@ -17,6 +17,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val search = findViewById<Button>(R.id.button)
+
+        // Start network intent for company
         search.setOnClickListener{
             val searchQuery = findViewById<TextView>(R.id.search_query).text
             val intent = Intent(this, Network::class.java)

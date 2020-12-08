@@ -1,27 +1,30 @@
 package com.example.myapplication
 
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 
+// This activity shows the detailed view of the company with the given company info from Network.kt
 class DetailedActivity : AppCompatActivity() {
-    private var firebase: Firebase? = null
     private lateinit var listView : ListView
     var stats = arrayListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.detailed_activity)
+
+        // Setting Title name
         val actionBarTitle = this.intent.getStringExtra(SEARCH_TAG)
-        firebase = Firebase()
         supportActionBar!!.title = actionBarTitle
+
+        // Adding all the intent elements into arraylist
         for (i in statsNames.indices){
             val ele = intent.getStringExtra(statsNames[i]) as String
             stats.add(ele)
         }
+
+        // Setting ListView with the InformationAdapter class
         listView = findViewById(R.id.detailed_act)
         val adapter = InformationAdapter(this, stats)
         listView.adapter = adapter

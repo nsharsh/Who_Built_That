@@ -42,6 +42,8 @@ class Network: Activity() {
                 // Cleanup some of the extra spacing for formatting
                 infobox_page = output.replace(" +".toRegex(), " ")
                 Log.i(TAG, infobox_page)
+
+                // Regex patterns for each detail to be found from the wikipedia page
                 val regexp_emp = Regex("num_employees = [{]*[a-zA-Z]*\\|*[}]* ?(([0-9]{1,3},?)+)")
                 val regexp_loc = Regex("((location|location_city|hq_location|hq_location_city) =.+\\[{2}((\\w ?)+, (\\w ?|[A-Za-z\\|])+)+\\]{2})")
                 val regexpLoc = Regex("\\[{2}((\\w ?)+, (\\w ?|[A-Za-z\\|])+)+\\]{2}")
@@ -119,7 +121,7 @@ class Network: Activity() {
                     stats.add("N/A")
                 }
 
-                // Packaging Intent
+                // Packaging Intent and showing detailed views
                 val intent = Intent(this@Network, DetailedActivity::class.java)
                 for (i in stats.indices){
                     intent.putExtra(MainActivity.statsNames[i], stats[i])
@@ -137,6 +139,7 @@ class Network: Activity() {
         finish()
     }
 
+    // Code from Networking Class Code and slightly modified
     @SuppressLint("StaticFieldLeak")
     inner class DownloaderTask(query_url: String, var callback: MyCallBack) : AsyncTask<Void, Void, String>() {
         private var url = query_url

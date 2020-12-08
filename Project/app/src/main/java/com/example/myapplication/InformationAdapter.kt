@@ -8,6 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 
+// Adapter for DetailedActivity to show each item
 class InformationAdapter(private val context: Context, private val data: ArrayList<String>): BaseAdapter() {
     private val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     private val itemNames = arrayOf("Annual Revenue (USD)", "Estimated Employee Count", "Founders", "Location", "Subsidiaries")
