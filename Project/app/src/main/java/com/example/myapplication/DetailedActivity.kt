@@ -27,20 +27,14 @@ class DetailedActivity : AppCompatActivity() {
         listView.adapter = adapter
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-
-    }
     companion object{
         private const val SEARCH_TAG = "search_query"
         private const val REVENUE_TAG = "annual_revenue"
         private const val EMPLOYEE_TAG = "employees"
-        private const val OWNER_TAG = "owners"
+        private const val FOUNDER_TAG = "founders"
         private const val LOCATION = "location"
         private const val SUB = "subsidiaries"
-        private val statsNames = arrayOf(REVENUE_TAG, EMPLOYEE_TAG, OWNER_TAG, LOCATION, SUB)
+        private val statsNames = arrayOf(REVENUE_TAG, EMPLOYEE_TAG, FOUNDER_TAG, LOCATION, SUB)
         private const val TAG = "Final_Proj"
     }
 }

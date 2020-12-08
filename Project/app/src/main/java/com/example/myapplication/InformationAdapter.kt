@@ -10,8 +10,8 @@ import android.widget.TextView
 
 class InformationAdapter(private val context: Context, private val data: ArrayList<String>): BaseAdapter() {
     private val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-    private val itemNames = arrayOf("Annual Revenue", "Estimated Employee Count", "Owners", "Location", "Subsidiaries")
-    private val imageNames = arrayOf("dollar_sign", "employees", "owners", "location", "subsidiary")
+    private val itemNames = arrayOf("Annual Revenue (USD)", "Estimated Employee Count", "Founders", "Location", "Subsidiaries")
+    private val imageNames = arrayOf("dollar_sign", "employees", "founders", "location", "subsidiary")
 
     override fun getCount(): Int {
         return data.size
